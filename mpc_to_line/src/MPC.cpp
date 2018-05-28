@@ -11,8 +11,8 @@ namespace plt = matplotlibcpp;
 using CppAD::AD;
 
 // TODO: Set N and dt
-size_t N = 20;
-double dt = 0.1 ;
+size_t N = 25;
+double dt = 0.05 ;
 
 // This value assumes the model presented in the classroom is used.
 //
@@ -75,6 +75,8 @@ class FG_eval {
       fg[0]+= CppAD::pow(vars[a_start+t]-vars[a_start+t+1],2);
     }
 
+    cout<<"setup cost function"<<endl;
+
     //
     // Setup Constraints
     //
@@ -101,8 +103,7 @@ class FG_eval {
       AD<double> psi1 = vars[psi_start + t];
       AD<double> cte1 = vars[cte_start + t];
       AD<double> epsi1 = vars[epsi_start + t];
-      AD<double> delta1 = vars[delta_start + t];
-      AD<double> a1 = vars[a_start + t];
+
 
 
       AD<double> x0 = vars[x_start + t - 1];
@@ -128,7 +129,7 @@ class FG_eval {
       fg[1 + psi_start + t] = psi1 - (psi0 + (v0/Lf)*delta0*dt);
       AD<double> f0 = coeffs[0] + coeffs[1] * x0;
       AD<double> psides0 = CppAD::atan(coeffs[1]);
-      fg[1 + cte_start + t] = cte1 - ((f0 - y0)+v0*CppAD::sin(epsi0)*dt));
+      fg[1 + cte_start + t] = cte1 - ((f0 - y0)+v0*CppAD::sin(epsi0)*dt);
       fg[1 + epsi_start + t] = epsi1 - (psides0 - psi0) + (v0/Lf)*delta0*dt;
 
     }
